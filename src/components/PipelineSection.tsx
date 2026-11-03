@@ -4,27 +4,27 @@ import { Lightbulb, Cpu, Layers, Disc3 } from 'lucide-react';
 const STEPS = [
   {
     step: '01',
-    name: 'Ideation & AI Storyboarding',
+    name: 'Concept & Visual Direction',
     icon: Lightbulb,
-    description: 'We develop the core visual thesis, cinematic script, and moodboards using Midjourney V6 and custom style seeds to lock in character look, color temperature, and atmospheric tone.'
+    description: 'Developing the visual thesis, typographic structure, style frames, and color palettes to establish a cohesive aesthetic foundation.'
   },
   {
     step: '02',
-    name: 'Neural Synthesis & Video Direction',
+    name: 'Generative Synthesis & Assets',
     icon: Cpu,
-    description: 'Directing camera physics, lighting cues, and character motion in Runway Gen-3 Alpha and ComfyUI. We utilize speed ramps and optical motion brushes to prevent morphing.'
+    description: 'Prompt crafting, neural video generation, and high-fidelity texture creation to produce rich cinematic plates and background elements.'
   },
   {
     step: '03',
-    name: 'Motion Graphics & 3D Compositing',
+    name: 'Motion Design & Choreography',
     icon: Layers,
-    description: 'Raw generative plates are brought into After Effects and Cinema 4D for 3D camera tracking, vector motion design, kinetic type, screen replacements, and UI telemetry passes.'
+    description: 'Kinetic typography, vector animation, 2D/3D motion passes, and camera staging crafted with fluid timing and rhythm in After Effects and Cinema 4D.'
   },
   {
     step: '04',
-    name: '4K Mastering & Sound Design',
+    name: 'Finishing & Multi-Format Delivery',
     icon: Disc3,
-    description: 'Color grading in DaVinci Resolve using ACES color space, AI neural upscaling to pristine 4K UHD 60fps, and custom sound design mixed to professional broadcast loudness.'
+    description: 'Final color grading, sound synchronization, and multi-format exports optimized for web, social feeds (16:9, 9:16), and presentation.'
   }
 ];
 
@@ -34,18 +34,18 @@ export const PipelineSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
-          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-amber-400 mb-3">
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-amber-400 mb-3 font-mono">
             <span>Workflow</span>
             <span aria-hidden="true">·</span>
-            <span>Production Pipeline</span>
+            <span>Creative Process</span>
             <span aria-hidden="true">·</span>
-            <span>Quality Assurance</span>
+            <span>Concept to Delivery</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            The Creative Production Pipeline
+            Creative Production Workflow
           </h2>
           <p className="text-zinc-400 text-base sm:text-lg mt-4 leading-relaxed">
-            A structured 4-phase methodology uniting precision graphic design, kinetic motion animation, and state-of-the-art AI video generation.
+            A disciplined 4-step creative process translating ideas into polished graphics, kinetic motion, and generative visual stories.
           </p>
         </div>
 
@@ -75,10 +75,6 @@ export const PipelineSection: React.FC = () => {
                   <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
                     {item.description}
                   </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-zinc-900 flex items-center gap-2 text-[11px] font-mono text-zinc-500">
-                  <span>PHASE {item.step} VERIFIED</span>
                 </div>
               </div>
             );

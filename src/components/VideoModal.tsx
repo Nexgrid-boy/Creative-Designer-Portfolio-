@@ -8,15 +8,7 @@ import {
   Volume2, 
   VolumeX, 
   Maximize, 
-  RotateCcw, 
-  Sparkles, 
-  Copy, 
-  Check, 
-  ExternalLink,
-  Cpu,
-  Layers,
-  SlidersHorizontal,
-  Cloud
+  RotateCcw
 } from 'lucide-react';
 import { Project } from '../types/project';
 import { getEmbedUrl, formatTime, getCloudinaryMp4Url, getCloudinaryThumbnailUrl } from '../utils/videoUtils';
@@ -26,15 +18,13 @@ interface VideoModalProps {
   projects: Project[];
   onClose: () => void;
   onSelectProject: (project: Project) => void;
-  onOpenConfigurator: () => void;
 }
 
 export const VideoModal: React.FC<VideoModalProps> = ({
   project,
   projects,
   onClose,
-  onSelectProject,
-  onOpenConfigurator
+  onSelectProject
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -44,8 +34,6 @@ export const VideoModal: React.FC<VideoModalProps> = ({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isLooping, setIsLooping] = useState(false);
   const [showControls, setShowControls] = useState(true);
-  const [copiedNotice, setCopiedNotice] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'workflow' | 'specs'>('overview');
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -207,26 +195,6 @@ export const VideoModal: React.FC<VideoModalProps> = ({
     }, 2500);
   };
 
-  const copyConfigSnippet = () => {
-    if (!project) return;
-    const tools = project.toolsUsed || (project as any).tools || [];
-    const snippet = `// In src/data/projects.ts:
-{
-  id: '${project.id}',
-  title: '${project.title}',
-  category: '${project.category}',
-  description: '${project.description || (project as any).shortDescription}',
-  videoUrl: '${project.videoUrl}',
-  thumbnailUrl: '${project.thumbnailUrl || (project as any).posterImage}',
-  toolsUsed: ${JSON.stringify(tools)},
-  year: '${project.year}',
-  featured: ${project.featured ?? true}
-}`;
-    navigator.clipboard.writeText(snippet);
-    setCopiedNotice(true);
-    setTimeout(() => setCopiedNotice(false), 2000);
-  };
-
   if (!project) return null;
 
   const resolvedVideoUrl = getCloudinaryMp4Url(project.videoUrl) || project.videoUrl;
@@ -385,12 +353,6 @@ export const VideoModal: React.FC<VideoModalProps> = ({
                   </div>
 
                   <div className="flex items-center gap-3">
-                    {/* Cloudinary indicator */}
-                    <div className="hidden sm:flex items-center gap-1 text-[10px] text-zinc-400 font-mono">
-                      <Cloud className="w-3 h-3 text-sky-400" />
-                      <span>Cloudinary MP4</span>
-                    </div>
-
                     {/* Playback speed selector */}
                     <button
                       onClick={handleSpeedChange}
@@ -436,125 +398,39 @@ export const VideoModal: React.FC<VideoModalProps> = ({
 
         {/* Project Details Pane */}
         <div className="p-6 bg-zinc-950 text-zinc-300">
-          {/* Detail Tabs */}
-          <div className="flex items-center gap-2 border-b border-zinc-800 pb-3 mb-6">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                activeTab === 'overview'
-                  ? 'bg-zinc-800 text-white'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              Overview & Concept
-            </button>
-            <button
-              onClick={() => setActiveTab('workflow')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                activeTab === 'workflow'
-                  ? 'bg-zinc-800 text-white'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              AI Workflow & Tools
-            </button>
-            <button
-              onClick={() => setActiveTab('specs')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                activeTab === 'specs'
-                  ? 'bg-zinc-800 text-white'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              Delivery Specifications
-            </button>
-          </div>
-
-          {/* Tab 1: Overview */}
-          {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in duration-150">
-              <div className="md:col-span-2">
-                <h4 className="text-sm font-semibold text-white mb-2">Project Synopsis</h4>
-                <p className="text-sm text-zinc-400 leading-relaxed mb-4">
-                  {description}
-                </p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {tools.map((tool, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 text-xs font-mono bg-zinc-900 border border-zinc-800 text-zinc-300 rounded"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-3 bg-zinc-900/50 p-4 rounded-xl border border-zinc-800/80 text-xs">
-                <div>
-                  <span className="text-zinc-500 uppercase tracking-wider block font-mono">Client / Context</span>
-                  <span className="text-zinc-200 font-medium">{project.client || 'Portfolio Production'}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-500 uppercase tracking-wider block font-mono">Year & Duration</span>
-                  <span className="text-zinc-200 font-medium font-mono">{project.year} · {project.duration || '00:30'}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-500 uppercase tracking-wider block font-mono">Hosting</span>
-                  <span className="text-zinc-200 font-medium font-mono text-[11px] truncate block">
-                    Cloudinary Secure CDN
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <h4 className="text-sm font-semibold text-white mb-2">Project Overview</h4>
+              <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                {description}
+              </p>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {tools.map((tool, i) => (
+                  <span
+                    key={i}
+                    className="px-2.5 py-1 text-xs font-mono bg-zinc-900 border border-zinc-800 text-zinc-300 rounded"
+                  >
+                    {tool}
                   </span>
-                </div>
+                ))}
               </div>
             </div>
-          )}
 
-          {/* Tab 2: AI Workflow */}
-          {activeTab === 'workflow' && (
-            <div className="space-y-4 animate-in fade-in duration-150 text-sm">
-              <div className="bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
-                <h5 className="text-xs uppercase font-mono tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
-                  <Cpu className="w-4 h-4" />
-                  <span>Tools & Generative Pipeline</span>
-                </h5>
-                <p className="text-zinc-300 text-sm leading-relaxed">
-                  Engineered using a hybrid pipeline of {tools.join(', ')}. Chaining diffusion models with vector typography, 3D tracking, and high-retention editing.
-                </p>
+            <div className="space-y-3 bg-zinc-900/50 p-4 rounded-xl border border-zinc-800/80 text-xs">
+              <div>
+                <span className="text-zinc-500 uppercase tracking-wider block font-mono">Category</span>
+                <span className="text-zinc-200 font-medium">{project.category}</span>
               </div>
-
-              <div className="bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
-                <h5 className="text-xs uppercase font-mono tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Creative Direction</span>
-                </h5>
-                <p className="text-zinc-300 text-sm leading-relaxed">
-                  {project.workflowNotes || 'Curated color science, dynamic speed ramps, and frame-accurate timing to eliminate AI artifacts and preserve broadcast fidelity.'}
-                </p>
+              <div>
+                <span className="text-zinc-500 uppercase tracking-wider block font-mono">Creator</span>
+                <span className="text-zinc-200 font-medium">Mary Irewunmi</span>
+              </div>
+              <div>
+                <span className="text-zinc-500 uppercase tracking-wider block font-mono">Year</span>
+                <span className="text-zinc-200 font-medium font-mono">{project.year}</span>
               </div>
             </div>
-          )}
-
-          {/* Tab 3: Technical Specs */}
-          {activeTab === 'specs' && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 animate-in fade-in duration-150">
-              <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800">
-                <span className="text-zinc-500 text-[11px] block font-mono uppercase">Master Codec</span>
-                <span className="text-zinc-200 font-semibold text-sm font-mono">H.264 / MP4 (4K)</span>
-              </div>
-              <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800">
-                <span className="text-zinc-500 text-[11px] block font-mono uppercase">CDN Delivery</span>
-                <span className="text-zinc-200 font-semibold text-sm font-mono">Cloudinary q_auto</span>
-              </div>
-              <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800">
-                <span className="text-zinc-500 text-[11px] block font-mono uppercase">Audio Fidelity</span>
-                <span className="text-zinc-200 font-semibold text-sm font-mono">24-bit 48kHz Stereo</span>
-              </div>
-              <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800">
-                <span className="text-zinc-500 text-[11px] block font-mono uppercase">Color Grading</span>
-                <span className="text-zinc-200 font-semibold text-sm font-mono">DaVinci Resolve ACES</span>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

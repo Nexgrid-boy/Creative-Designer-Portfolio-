@@ -4,10 +4,9 @@ import { DESIGNER_INFO } from '../data/projects';
 
 interface NavbarProps {
   onOpenShowreel: () => void;
-  onOpenConfigurator?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenShowreel, onOpenConfigurator }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenShowreel }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

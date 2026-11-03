@@ -28,11 +28,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate swift submission
+
+    const subject = encodeURIComponent(`Project Inquiry: ${formData.service} from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hi Mary,\n\nI would like to inquire about your creative services.\n\n` +
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n` +
+      `Service: ${formData.service}\n` +
+      `Budget: ${formData.budget}\n` +
+      `Timeline: ${formData.timeline}\n\n` +
+      `Project Brief:\n${formData.details}\n`
+    );
+
+    // Open default email client with populated brief
+    window.location.href = `mailto:${DESIGNER_INFO.contactEmail}?subject=${subject}&body=${body}`;
+
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
-    }, 600);
+    }, 400);
   };
 
   return (
@@ -40,18 +54,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
-          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-amber-400 mb-3">
-            <span>Availability</span>
-            <span aria-hidden="true">·</span>
-            <span>Q1 / Q2 2026</span>
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-amber-400 mb-3 font-mono">
+            <span>Inquiries</span>
             <span aria-hidden="true">·</span>
             <span>Worldwide Remote</span>
+            <span aria-hidden="true">·</span>
+            <span>Graphics & Motion</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Let&apos;s Build Something Unforgettable
+            Let&apos;s Work Together
           </h2>
           <p className="text-zinc-400 text-base sm:text-lg mt-4 leading-relaxed">
-            Have a commercial campaign, motion identity, or experimental AI video in mind? Reach out with your project parameters to get a tailored proposal.
+            Have a brand project, motion graphics piece, or creative visual in mind? Get in touch with your project parameters.
           </p>
         </div>
 
@@ -65,28 +79,37 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">
-                  Project Inquiry Received
+                  Ready to Send
                 </h3>
                 <p className="text-sm text-zinc-400 max-w-md mx-auto leading-relaxed mb-6">
-                  Thank you for reaching out, <span className="text-zinc-200 font-semibold">{formData.name}</span>. I have received your request for <span className="text-amber-400">{formData.service}</span> and will review your parameters within 24 hours.
+                  Thank you, <span className="text-zinc-200 font-semibold">{formData.name}</span>. Your project parameters have been prepared for <span className="text-amber-400">{DESIGNER_INFO.contactEmail}</span>.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSubmitted(false);
-                    setFormData({
-                      name: '',
-                      email: '',
-                      service: 'Graphics Design & Brand Systems',
-                      budget: '$5k – $15k',
-                      timeline: 'Within 2–4 Weeks',
-                      details: ''
-                    });
-                  }}
-                  className="px-5 py-2.5 text-xs font-semibold text-zinc-900 bg-amber-400 rounded-xl hover:bg-amber-300 transition-colors"
-                >
-                  Send Another Inquiry
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={`mailto:${DESIGNER_INFO.contactEmail}?subject=${encodeURIComponent(`Project Inquiry: ${formData.service}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nService: ${formData.service}\n\n${formData.details}`)}`}
+                    className="px-5 py-2.5 text-xs font-semibold text-zinc-900 bg-amber-400 rounded-xl hover:bg-amber-300 transition-colors inline-flex items-center gap-2"
+                  >
+                    <Mail className="w-4 h-4" />
+                    <span>Open Email Client</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({
+                        name: '',
+                        email: '',
+                        service: 'Graphics Design & Brand Systems',
+                        budget: 'Flexible / Open to discussion',
+                        timeline: 'Within 2–4 Weeks',
+                        details: ''
+                      });
+                    }}
+                    className="px-5 py-2.5 text-xs font-semibold text-zinc-300 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 transition-colors"
+                  >
+                    New Message
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -114,7 +137,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                     <input
                       type="email"
                       required
-                      placeholder="jane@company.com"
+                      placeholder="jane@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 text-sm bg-zinc-900/80 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-amber-400 transition-colors"
@@ -136,25 +159,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                       <option value="Graphics Design & Brand Systems">Graphics Design & Brand Systems</option>
                       <option value="Motion Design & Dynamic Animation">Motion Design & Dynamic Animation</option>
                       <option value="AI Motion Design & Generative Video">AI Motion Design & Generative Video</option>
-                      <option value="Integrated Creative Direction">Integrated Creative Direction (All 3 Disciplines)</option>
-                      <option value="Other Custom Creative Production">Other Custom Project</option>
+                      <option value="Integrated Creative Direction">Integrated Creative Direction</option>
+                      <option value="Other Creative Production">Other Creative Production</option>
                     </select>
                   </div>
 
                   {/* Budget */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 font-mono mb-2">
-                      Estimated Budget
+                      Budget Range
                     </label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                       className="w-full px-4 py-3 text-sm bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
                     >
-                      <option value="Under $5,000">Under $5,000</option>
-                      <option value="$5,000 – $15,000">$5,000 – $15,000</option>
-                      <option value="$15,000 – $30,000">$15,000 – $30,000</option>
-                      <option value="$30,000+">$30,000+ (Comprehensive Campaign)</option>
+                      <option value="Flexible / Open to discussion">Flexible / Open to discussion</option>
+                      <option value="Small Project / Fast Turnaround">Small Project / Fast Turnaround</option>
+                      <option value="Standard Brand / Motion Package">Standard Brand / Motion Package</option>
+                      <option value="Full Production Campaign">Full Production Campaign</option>
                     </select>
                   </div>
                 </div>
@@ -162,12 +185,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                 {/* Details */}
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 font-mono mb-2">
-                    Project Brief & Vision *
+                    Project Brief & Details *
                   </label>
                   <textarea
                     required
                     rows={4}
-                    placeholder="Tell me about the concept, references, deliverables, and target deadline..."
+                    placeholder="Tell me about the project goals, deliverables, and estimated timeline..."
                     value={formData.details}
                     onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                     className="w-full px-4 py-3 text-sm bg-zinc-900/80 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-amber-400 transition-colors"
@@ -181,10 +204,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                   className="w-full py-3.5 px-6 text-sm font-semibold text-zinc-950 bg-amber-400 hover:bg-amber-300 disabled:opacity-50 rounded-xl transition-all shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
-                    <span>Submitting Request...</span>
+                    <span>Opening Mail Client...</span>
                   ) : (
                     <>
-                      <span>Transmit Project Brief</span>
+                      <span>Send Project Inquiry</span>
                       <Send className="w-4 h-4 ml-1" />
                     </>
                   )}
@@ -209,7 +232,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
                   <span className="break-all">{DESIGNER_INFO.contactEmail}</span>
                 </a>
                 <span className="text-xs text-zinc-500 block mt-2">
-                  Expect a response within 24 hours Monday through Friday.
+                  Direct inbox. Inquiries are typically reviewed within 24 hours.
                 </span>
               </div>
 
@@ -275,7 +298,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
 
             {/* Availability Pill */}
             <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-amber-200/90 leading-relaxed">
-              <strong className="text-amber-300">Currently Booking:</strong> Q1 / Q2 commercial spots, title sequences, and music video directing. Worldwide remote with studio availability in London and European time zones.
+              <strong className="text-amber-300">Open for Work:</strong> Available for graphics design systems, motion graphics, and creative AI video projects. Worldwide remote collaboration.
             </div>
           </div>
         </div>

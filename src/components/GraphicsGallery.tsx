@@ -194,21 +194,23 @@ export const GraphicsGallery: React.FC<GraphicsGalleryProps> = ({
             </div>
           )
         ) : (
-          /* Waiting for User Images Banner */
-          <div className="p-10 sm:p-14 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-center flex flex-col items-center justify-center max-w-3xl mx-auto shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center mb-5 shadow-lg shadow-amber-500/10">
-              <ImageIcon className="w-8 h-8" />
+          /* Professional Graphics Showcase Status */
+          <div className="p-12 sm:p-16 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-center flex flex-col items-center justify-center max-w-2xl mx-auto shadow-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center mb-5">
+              <Palette className="w-7 h-7" />
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-2">
-              Ready for Graphics Design Images
+              Graphics Design Showcase
             </h3>
-            <p className="text-sm text-zinc-400 max-w-lg leading-relaxed mb-6">
-              Post your Cloudinary image links here in the chat (one by one or all together), and they will appear immediately in Mary&apos;s Graphics Design gallery.
+            <p className="text-sm text-zinc-400 max-w-md leading-relaxed mb-6">
+              A curated selection of brand identity systems, typography, editorial packaging, and digital vector artwork is being assembled for this section.
             </p>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-amber-400">
-              <Palette className="w-4 h-4 text-amber-400" />
-              <span>Awaiting your image URLs...</span>
-            </div>
+            <a
+              href="#contact"
+              className="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-semibold tracking-wider uppercase transition-colors"
+            >
+              Inquire for Graphics Work
+            </a>
           </div>
         )}
       </div>

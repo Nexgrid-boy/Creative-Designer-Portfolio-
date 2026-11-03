@@ -6,7 +6,6 @@ import { ProjectCard } from './ProjectCard';
 interface ProjectGalleryProps {
   projects: Project[];
   onSelectProject: (project: Project) => void;
-  onOpenConfigurator?: () => void;
 }
 
 const CATEGORIES: ProjectCategory[] = [
