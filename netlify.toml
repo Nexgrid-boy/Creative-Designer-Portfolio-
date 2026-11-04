@@ -5,8 +5,21 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Single-page app: serve index.html for any unknown route
+# Single-page app: serve index.html for all client routes with HTTP 200
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Cache static assets efficiently
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
