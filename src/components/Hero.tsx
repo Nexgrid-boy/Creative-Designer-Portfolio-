@@ -1,20 +1,65 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
-import { DESIGNER_INFO } from '../data/projects';
+import { ArrowDown, ArrowUpRight, Sparkles, Play, Pause, Volume2, VolumeX, Maximize2 } from 'lucide-react';
+import { DESIGNER_INFO, HERO_BACKGROUND_VIDEO } from '../data/projects';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onWatchHeroVideo?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onWatchHeroVideo }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   // Check user accessibility preference for reduced motion
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
+    if (mediaQuery.matches && videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
 
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    const handler = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+      if (e.matches && videoRef.current) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
+
+  // Ensure autoplay starts reliably
+  useEffect(() => {
+    if (videoRef.current && !prefersReducedMotion) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be restricted until user interaction
+        setIsPlaying(false);
+      });
+    }
+  }, [prefersReducedMotion]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const nextMuted = !isMuted;
+    videoRef.current.muted = nextMuted;
+    setIsMuted(nextMuted);
+  };
 
   // Ambient Kinetic Motion Graphics Canvas (Abstract particles and undulating light ribbons)
   useEffect(() => {
@@ -128,30 +173,91 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#070709]">
-      {/* 1. KINETIC MOTION GRAPHICS AMBIENT BACKGROUND */}
+      {/* 1. CINEMATIC VIDEO BACKGROUND */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted={isMuted}
+          loop
+          playsInline
+          poster={HERO_BACKGROUND_VIDEO.posterUrl}
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 scale-[1.02] filter brightness-[0.72] contrast-[1.08] ${
+            isVideoLoaded ? 'opacity-80' : 'opacity-40'
+          }`}
+        >
+          <source src={HERO_BACKGROUND_VIDEO.videoUrl} type="video/mp4" />
+        </video>
+
+        {/* Ambient Generative Motion Particle Overlay on top of video */}
         <canvas
           ref={canvasRef}
-          className="w-full h-full object-cover opacity-85"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen pointer-events-none"
           aria-hidden="true"
         />
       </div>
 
-      {/* Multi-Layer Dark Transparent Overlays to ensure optimal text contrast */}
+      {/* Multi-Layer Dark Transparent Overlays to ensure pristine text contrast */}
       <div 
         aria-hidden="true" 
-        className="absolute inset-0 bg-gradient-to-b from-[#070709]/80 via-[#070709]/50 to-[#070709]/95 z-10 pointer-events-none" 
+        className="absolute inset-0 bg-gradient-to-b from-[#070709]/85 via-[#070709]/55 to-[#070709]/95 z-10 pointer-events-none" 
       />
       <div 
         aria-hidden="true" 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,transparent_70%)] z-10 pointer-events-none" 
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(7,7,9,0.35)_0%,rgba(7,7,9,0.85)_100%)] z-10 pointer-events-none" 
       />
 
-      {/* Subtle glowing ambient light behind headline */}
+      {/* Subtle warm amber glowing ambient light behind headline */}
       <div 
         aria-hidden="true" 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-amber-500/10 blur-[160px] pointer-events-none rounded-full z-10" 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-amber-500/12 blur-[160px] pointer-events-none rounded-full z-10" 
       />
+
+      {/* Floating Background Video Controls (Bottom-Right on desktop, Bottom-Right on mobile) */}
+      <div className="absolute bottom-8 right-6 sm:right-8 z-30 flex items-center gap-2">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/80 border border-zinc-800/80 backdrop-blur-md shadow-xl text-xs text-zinc-300">
+          <span className="relative flex h-2 w-2 mr-0.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+          </span>
+          <span className="hidden sm:inline font-mono text-[11px] text-zinc-400 uppercase tracking-wider mr-1">
+            BG REEL
+          </span>
+
+          {/* Play / Pause toggle */}
+          <button
+            onClick={togglePlay}
+            className="p-1.5 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-amber-400 transition-colors"
+            title={isPlaying ? 'Pause background video' : 'Play background video'}
+            aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
+          >
+            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+          </button>
+
+          {/* Mute / Unmute toggle */}
+          <button
+            onClick={toggleMute}
+            className="p-1.5 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-amber-400 transition-colors"
+            title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+            aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-amber-400" />}
+          </button>
+
+          {/* Fullscreen Theater Preview button if provided */}
+          {onWatchHeroVideo && (
+            <button
+              onClick={onWatchHeroVideo}
+              className="p-1.5 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-amber-400 transition-colors ml-0.5"
+              title="Open video in cinema theater"
+              aria-label="Open video in cinema theater"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* 2. HERO CONTENT CONTAINER */}
       <div className="relative z-20 max-w-5xl mx-auto px-6 sm:px-8 py-32 text-center flex flex-col items-center">

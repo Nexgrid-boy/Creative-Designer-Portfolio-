@@ -47,6 +47,14 @@ export default function App() {
     }
   };
 
+  // Open hero background video in cinema modal
+  const handleWatchHeroVideo = () => {
+    const bgProject = projects.find((p) => p.id === 'project-rhythmic-ai-motion') || projects[5] || projects[0];
+    if (bgProject) {
+      setSelectedProject(bgProject);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#070709] text-zinc-100 flex flex-col selection:bg-amber-400 selection:text-zinc-950">
       {/* Top Bar Navigation */}
@@ -54,8 +62,8 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main className="flex-1">
-        {/* 1. Hero Section */}
-        <Hero />
+        {/* 1. Hero Section with dynamic video background */}
+        <Hero onWatchHeroVideo={handleWatchHeroVideo} />
 
         {/* 2. Central Attraction: Selected Projects Video Gallery */}
         <ProjectGallery

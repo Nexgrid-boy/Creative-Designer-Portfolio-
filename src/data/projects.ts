@@ -82,8 +82,29 @@ export const PROJECTS: Project[] = [
     duration: '00:30',
     client: 'Commercial Sequence',
     isPlaceholder: false
+  },
+  {
+    id: 'project-rhythmic-ai-motion',
+    title: 'Rhythmic AI Motion & Spatial Dynamics',
+    category: 'AI Motion Graphics',
+    description: 'Dynamic kinetic AI motion sequence exploring spatial transitions, generative illumination, and fluid visual choreography.',
+    videoUrl: 'https://res.cloudinary.com/qfne5rap/video/upload/q_auto,f_auto/lv_0_20261103165934_ria93i.mp4',
+    thumbnailUrl: 'https://res.cloudinary.com/qfne5rap/video/upload/so_0,q_auto,f_auto/lv_0_20261103165934_ria93i.jpg',
+    toolsUsed: ['Runway Gen-3', 'After Effects', 'Cinema 4D'],
+    year: '2026',
+    featured: true,
+    duration: '00:30',
+    client: 'Featured Showcase',
+    isPlaceholder: false
   }
 ];
+
+export const HERO_BACKGROUND_VIDEO = {
+  id: 'project-rhythmic-ai-motion',
+  title: 'Rhythmic AI Motion & Spatial Dynamics',
+  videoUrl: 'https://res.cloudinary.com/qfne5rap/video/upload/q_auto,f_auto/lv_0_20261103165934_ria93i.mp4',
+  posterUrl: 'https://res.cloudinary.com/qfne5rap/video/upload/so_0,q_auto,f_auto/lv_0_20261103165934_ria93i.jpg'
+};
 
 export const DESIGNER_INFO = {
   name: 'Mary Irewunmi',
