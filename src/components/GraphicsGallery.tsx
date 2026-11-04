@@ -126,13 +126,39 @@ export const GraphicsGallery: React.FC<GraphicsGalleryProps> = ({
                   aria-label={`View ${project.title}`}
                 >
                   {/* Image Container */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-900">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
                     <img
                       src={project.imageUrl}
                       alt={project.title}
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        const fallbackElem = target.parentElement?.querySelector('.image-error-fallback') as HTMLElement;
+                        if (fallbackElem) {
+                          fallbackElem.style.display = 'flex';
+                        }
+                      }}
                     />
+
+                    {/* Visual Fallback Container for Incomplete or Broken URLs */}
+                    <div
+                      className="image-error-fallback absolute inset-0 hidden flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 border-b border-zinc-800"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
+                        <ImageIcon className="w-6 h-6" />
+                      </div>
+                      <h4 className="text-sm font-semibold text-white mb-1 line-clamp-1">
+                        {project.title}
+                      </h4>
+                      <p className="text-[11px] text-amber-400 font-mono bg-amber-400/10 px-2 py-1 rounded border border-amber-400/20 max-w-xs truncate">
+                        Link truncated at ...Instagram_Pos
+                      </p>
+                      <span className="text-[10px] text-zinc-500 mt-2">
+                        Awaiting complete Cloudinary URL ending in _xxxxxx.png
+                      </span>
+                    </div>
 
                     {/* Scrim Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent group-hover:from-black/70 transition-colors pointer-events-none" />

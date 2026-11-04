@@ -317,7 +317,7 @@ export const Hero: React.FC<HeroProps> = ({ onWatchHeroVideo }) => {
         href="#projects"
         onClick={(e) => scrollToSection(e, 'projects')}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-zinc-400 hover:text-amber-400 transition-colors group cursor-pointer"
-        aria-label="Scroll to Selected Works section"
+        aria-label="Scroll to Project Works section"
       >
         <span className="text-[10px] font-mono uppercase tracking-[0.25em]">Scroll Down</span>
         <div className="w-5 h-8 rounded-full border border-zinc-700 flex items-start justify-center p-1 group-hover:border-amber-400 transition-colors">

@@ -50,13 +50,13 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
             <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-amber-400 mb-3 font-mono">
               <span>Portfolio</span>
               <span aria-hidden="true">·</span>
-              <span>Selected Works</span>
+              <span>Project Works</span>
               <span aria-hidden="true">·</span>
               <span>Motion & AI</span>
             </div>
-            {/* Title requested by user: "Selected Works" */}
+            {/* Title requested by user: "Project Works" */}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-              Selected Works
+              Project Works
             </h2>
             {/* Subtitle requested by user */}
             <p className="text-zinc-400 text-sm sm:text-base max-w-2xl mt-3 leading-relaxed">

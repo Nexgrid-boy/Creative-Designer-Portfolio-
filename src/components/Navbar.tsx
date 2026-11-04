@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenShowreel }) => {
               href="#projects"
               className="hover:text-white transition-colors whitespace-nowrap shrink-0"
             >
-              Selected Works
+              Project Works
             </a>
             <a
               href="#graphics"
@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenShowreel }) => {
               onClick={() => setMobileMenuOpen(false)}
               className="text-base font-medium text-zinc-200 hover:text-amber-400 py-1"
             >
-              Selected Works (Video)
+              Project Works (Video)
             </a>
             <a
               href="#graphics"

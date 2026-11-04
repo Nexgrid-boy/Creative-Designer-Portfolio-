@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
           {/* Clean text nav links */}
           <nav className="flex items-center gap-6 text-zinc-400 font-medium">
             <a href="#projects" className="hover:text-white transition-colors">
-              Selected Works
+              Project Works
             </a>
             <a href="#graphics" className="hover:text-white transition-colors">
               Graphics Design

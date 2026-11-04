@@ -116,6 +116,13 @@ export const GraphicsModal: React.FC<GraphicsModalProps> = ({
             src={project.imageUrl}
             alt={project.title}
             className="max-h-[65vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.dataset.fallbackApplied) {
+                target.dataset.fallbackApplied = 'true';
+                target.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700"><rect width="900" height="700" fill="%23131318"/><circle cx="450" cy="310" r="90" fill="%23f59e0b" fill-opacity="0.15"/><polygon points="450,240 500,340 400,340" fill="%23f59e0b" fill-opacity="0.85"/><text x="450" y="440" fill="%23ffffff" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle">${encodeURIComponent(project.title)}</text><text x="450" y="480" fill="%23a1a1aa" font-family="sans-serif" font-size="16" text-anchor="middle">${encodeURIComponent(project.category)}</text></svg>`;
+              }
+            }}
           />
         </div>
 
